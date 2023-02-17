@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
 import Home from "../pages/Home";
+import Login from "../pages/Login";
 import Media from "../pages/Media";
 import PostContent from "../pages/PostContent";
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
             {
                 path: "/post/:id",
                 element: <PostContent />,
+            },
+            {
+                path: "/login",
+                element: <Login />,
             },
         ],
     },
