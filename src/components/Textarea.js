@@ -10,7 +10,7 @@ function Textarea() {
     };
 
     return (
-        <div className="w-4/5 sm:w-[500px] mx-auto py-5">
+        <section className="w-4/5 sm:w-[500px] mx-auto py-5">
             {show && (
                 <div className="flex justify-between items-center py-5">
                     <h1 className="text-lg font-semibold text-gray-500 text-center relative">
@@ -50,7 +50,7 @@ function Textarea() {
                     />
                 )}
             </form>
-        </div>
+        </section>
     );
 }
 
