@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "../firebase";
+import AuthGoogle from "../components/AuthGoogle";
 
 function Login() {
     const [signInWithEmailAndPassword, user, loading, error] =
@@ -89,6 +90,8 @@ function Login() {
             >
                 Create new account
             </Link>
+
+            <AuthGoogle />
         </section>
     );
 }
