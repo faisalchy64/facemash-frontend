@@ -1,12 +1,17 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+    useCreateUserWithEmailAndPassword,
+    useUpdateProfile,
+} from "react-firebase-hooks/auth";
 import auth from "../firebase";
 import AuthGoogle from "../components/AuthGoogle";
 
-function Login() {
-    const [signInWithEmailAndPassword, , , error] =
-        useSignInWithEmailAndPassword(auth);
+function Signup() {
+    const [createUserWithEmailAndPassword, , , error] =
+        useCreateUserWithEmailAndPassword(auth);
+
+    const [updateProfile] = useUpdateProfile(auth);
 
     const {
         register,
@@ -15,16 +20,38 @@ function Login() {
     } = useForm();
 
     const onSubmit = async (data) => {
-        await signInWithEmailAndPassword(data.email, data.password);
+        await createUserWithEmailAndPassword(data.email, data.password);
+        await updateProfile({ displayName: data.name });
     };
 
     return (
         <section className="w-4/5 sm:w-[500px]  min-h-[80vh] flex flex-col justify-center items-center gap-5 mx-auto py-5">
-            <h1 className="text-3xl font-semibold text-gray-500">Login</h1>
+            <h1 className="text-3xl font-semibold text-gray-500">Signup</h1>
             <form
                 className="w-full flex flex-col gap-2.5"
                 onSubmit={handleSubmit(onSubmit)}
             >
+                <input
+                    type="text"
+                    placeholder="name"
+                    className="w-full block text-gray-500 border-2 border-gray-400 outline-none px-2.5 py-1.5 rounded-md"
+                    {...register("name", {
+                        required: true,
+                        pattern: /^[a-zA-Z ]{2,30}$/,
+                    })}
+                />
+                {errors.name?.type === "required" && (
+                    <p className="text-[10px] text-red-400">
+                        Name is required.
+                    </p>
+                )}
+
+                {errors.email?.type === "pattern" && (
+                    <p className="text-[10px] text-red-400">
+                        Please give a valid name.
+                    </p>
+                )}
+
                 <input
                     type="email"
                     placeholder="email address"
@@ -73,7 +100,7 @@ function Login() {
 
                 <input
                     type="submit"
-                    value="Login"
+                    value="Signup"
                     className="w-full block text-white bg-blue-500 outline-none px-2.5 py-1.5 rounded-md"
                 />
             </form>
@@ -85,10 +112,10 @@ function Login() {
             )}
 
             <Link
-                to="/signup"
+                to="/login"
                 className="text-sm text-gray-500 px-2.5 py-1.5 border rounded"
             >
-                Create new account
+                Already have an account?
             </Link>
 
             <AuthGoogle />
@@ -96,4 +123,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Signup;

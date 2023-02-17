@@ -2,7 +2,7 @@ import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import auth from "../firebase";
 
 function AuthGoogle() {
-    const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+    const [signInWithGoogle, , , error] = useSignInWithGoogle(auth);
 
     const handleGoogle = async () => {
         await signInWithGoogle();
