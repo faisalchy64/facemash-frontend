@@ -1,12 +1,54 @@
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { url } from "../common";
+import auth from "../firebase";
+import Toast from "./Toast";
 
 function Textarea() {
     const [show, setShow] = useState(false);
+    const [toast, setToast] = useState(false);
+    const [user] = useAuthState(auth);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(e.target.body.value);
+        if ((user && e.target.body.value) || e.target.image.value) {
+            const post = {
+                username: user.displayName,
+                email: user.email,
+                body: e.target.body.value,
+                image: e.target.image.value,
+                react: { count: 0, person: [] },
+                timestamp: Date.now(),
+            };
+
+            const response = await fetch(`${url}/posts`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(post),
+            });
+
+            const result = await response.json();
+
+            if (result) {
+                e.target.body.value = "";
+                e.target.image.value = "";
+
+                setShow(false);
+                setToast(true);
+                setTimeout(() => setToast(false), 2500);
+            }
+        }
+    };
+
+    const handleTextarea = () => {
+        if (user) {
+            setShow(true);
+        } else {
+            navigate("/login");
+        }
     };
 
     return (
@@ -30,7 +72,7 @@ function Textarea() {
                     className="w-full h-40 block text-gray-500 px-2.5 py-1.5 border-2 border-gray-400 outline-none resize-none rounded-md"
                     name="body"
                     placeholder="What's on your mind?"
-                    onFocus={() => setShow(true)}
+                    onFocus={handleTextarea}
                 ></textarea>
 
                 {show && (
@@ -50,6 +92,10 @@ function Textarea() {
                     />
                 )}
             </form>
+
+            {toast && (
+                <Toast message="Post uploaded successfully." color="green" />
+            )}
         </section>
     );
 }
