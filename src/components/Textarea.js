@@ -21,6 +21,7 @@ function Textarea() {
                 body: e.target.body.value,
                 image: e.target.image.value,
                 react: { count: 0, person: [] },
+                comments: [],
                 timestamp: Date.now(),
             };
 
