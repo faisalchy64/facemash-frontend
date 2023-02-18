@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+    useAuthState,
+    useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import auth from "../firebase";
 import AuthGoogle from "../components/AuthGoogle";
+import { useEffect } from "react";
 
 function Login() {
     const [signInWithEmailAndPassword, , , error] =
@@ -17,6 +21,19 @@ function Login() {
     const onSubmit = async (data) => {
         await signInWithEmailAndPassword(data.email, data.password);
     };
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || "/";
+
+    const [user] = useAuthState(auth);
+
+    useEffect(() => {
+        if (user) {
+            navigate(from, { replace: true });
+        }
+    }, [user, from, navigate]);
 
     return (
         <section className="w-4/5 sm:w-[500px]  min-h-[80vh] flex flex-col justify-center items-center gap-5 mx-auto py-5">

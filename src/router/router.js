@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import AuthRoute from "../components/AuthRoute";
 import Main from "../layout/Main";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -17,11 +18,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "/media",
-                element: <Media />,
+                element: (
+                    <AuthRoute>
+                        <Media />
+                    </AuthRoute>
+                ),
             },
             {
                 path: "/post/:id",
-                element: <PostContent />,
+                element: (
+                    <AuthRoute>
+                        <PostContent />
+                    </AuthRoute>
+                ),
             },
             {
                 path: "/login",

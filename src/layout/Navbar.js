@@ -1,8 +1,16 @@
 import { useState } from "react";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
+import auth from "../firebase";
 
 function Navbar() {
     const [show, setShow] = useState(false);
+    const [user] = useAuthState(auth);
+    const [signOut] = useSignOut(auth);
+
+    const handleSignOut = async () => {
+        await signOut();
+    };
 
     return (
         <nav className="py-2.5">
@@ -25,7 +33,11 @@ function Navbar() {
                         <Link to="/about">About</Link>
                     </li>
                     <li>
-                        <Link to="/login">Login</Link>
+                        {user ? (
+                            <button onClick={handleSignOut}>Logout</button>
+                        ) : (
+                            <Link to="/login">Login</Link>
+                        )}
                     </li>
                 </ul>
 
@@ -51,7 +63,11 @@ function Navbar() {
                             <Link to="/about">About</Link>
                         </li>
                         <li>
-                            <Link to="/login">Login</Link>
+                            {user ? (
+                                <button onClick={handleSignOut}>Logout</button>
+                            ) : (
+                                <Link to="/login">Login</Link>
+                            )}
                         </li>
                     </ul>
                 )}
