@@ -4,11 +4,7 @@ import auth from "../firebase";
 
 function AuthRoute({ children }) {
     const location = useLocation();
-    const [user, loading] = useAuthState(auth);
-
-    if (loading) {
-        return <h1>Loading...</h1>;
-    }
+    const [user] = useAuthState(auth);
 
     if (user) {
         return children;
