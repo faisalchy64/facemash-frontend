@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import auth from "../firebase";
 import Navbar from "./Navbar";
 import Loading from "../components/Loading";
+import Footer from "./Footer";
 
 function Main() {
     const [, loading] = useAuthState(auth);
@@ -15,6 +16,7 @@ function Main() {
                 <>
                     <Navbar />
                     <Outlet />
+                    <Footer />
                 </>
             )}
         </>

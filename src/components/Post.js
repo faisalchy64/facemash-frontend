@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { url } from "../common";
 import auth from "../firebase";
@@ -7,10 +7,15 @@ import { useEffect, useState } from "react";
 function Post({ post }) {
     const [reaction, setReaction] = useState({ count: 0, person: [] });
     const [user] = useAuthState(auth);
+    const navigate = useNavigate();
 
     const { _id, username, body, image, react } = post;
 
     const handleReact = async () => {
+        if (!user) {
+            return navigate("/login");
+        }
+
         if (reaction?.person?.includes(user.email)) {
             if (reaction.count > 0) {
                 const response = await fetch(`${url}/posts/${_id}`, {
@@ -81,7 +86,7 @@ function Post({ post }) {
                 <p className="flex items-center gap-0.5">
                     <span
                         className={`material-symbols-outlined cursor-pointer ${
-                            reaction?.person?.includes(user.email)
+                            reaction?.person?.includes(user?.email)
                                 ? "text-red-400"
                                 : ""
                         }`}
