@@ -50,7 +50,7 @@ function Navbar() {
 
                 {show && (
                     <ul
-                        className="flex flex-col sm:hidden items-center gap-2.5 text-sm text-gray-500 px-2.5 py-3 bg-gray-50 absolute top-[7.5%] right-[5%] shadow-md rounded"
+                        className="flex flex-col sm:hidden items-center gap-2.5 bg-white text-sm text-gray-500 px-2.5 py-3 absolute top-[7.5%] right-[5%] shadow-md rounded z-10"
                         onClick={() => setShow(!show)}
                     >
                         <li>

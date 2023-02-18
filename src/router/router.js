@@ -1,9 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import AuthRoute from "../components/AuthRoute";
 import Main from "../layout/Main";
+import About from "../pages/About";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Media from "../pages/Media";
+import NotFound from "../pages/NotFound";
 import PostContent from "../pages/PostContent";
 import Signup from "../pages/Signup";
 
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
                 ),
             },
             {
+                path: "/about",
+                element: (
+                    <AuthRoute>
+                        <About />
+                    </AuthRoute>
+                ),
+            },
+            {
                 path: "/login",
                 element: <Login />,
             },
@@ -41,6 +51,10 @@ const router = createBrowserRouter([
                 element: <Signup />,
             },
         ],
+    },
+    {
+        path: "*",
+        element: <NotFound />,
     },
 ]);
 

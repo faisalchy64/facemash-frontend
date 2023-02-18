@@ -8,12 +8,14 @@ import {
 import auth from "../firebase";
 import AuthGoogle from "../components/AuthGoogle";
 import { useEffect } from "react";
+import { url } from "../common";
 
 function Signup() {
     const [createUserWithEmailAndPassword, , , error] =
         useCreateUserWithEmailAndPassword(auth);
 
     const [updateProfile] = useUpdateProfile(auth);
+    const [user] = useAuthState(auth);
 
     const {
         register,
@@ -31,10 +33,24 @@ function Signup() {
 
     const from = location.state?.from?.pathname || "/";
 
-    const [user] = useAuthState(auth);
-
     useEffect(() => {
         if (user) {
+            const person = {
+                username: user.displayName,
+                email: user.email,
+                secondary: user.email,
+                university: "Not yet provided.",
+                address: "Not yet provided.",
+            };
+
+            fetch(`${url}/users`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(person),
+            })
+                .then((res) => res.json())
+                .then((data) => console.log(data));
+
             navigate(from, { replace: true });
         }
     }, [user, from, navigate]);

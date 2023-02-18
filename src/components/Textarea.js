@@ -5,7 +5,7 @@ import { url } from "../common";
 import auth from "../firebase";
 import Toast from "./Toast";
 
-function Textarea() {
+function Textarea({ posts, setPosts }) {
     const [show, setShow] = useState(false);
     const [toast, setToast] = useState(false);
     const [user] = useAuthState(auth);
@@ -37,8 +37,11 @@ function Textarea() {
                 e.target.body.value = "";
                 e.target.image.value = "";
 
+                console.log(result);
+
                 setShow(false);
                 setToast(true);
+                setPosts([...posts, { ...post, _id: result.insertedId }]);
                 setTimeout(() => setToast(false), 2500);
             }
         }
